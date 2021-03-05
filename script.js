@@ -13,6 +13,7 @@ const gameBoard = (() => {
         for (let i = 0; i < 9; i++)
             board[i] = "";
     };
+
     const getSquare = (pos) => {
         return board[pos]
     }
@@ -53,49 +54,60 @@ const game = (() => {
     const board = gb.getBoard();
     const winConditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]; 
     let gameInProgress = false;
-    let i = 0;
+    let turn = 0;
     let human = playerFactory("X");
     let computer = playerFactory("O");
+    let gameOver = false;
 
     const playFirst = () => {
+        console.log(turn)
 
-        if (!gameInProgress) {
-            human = playerFactory("X");
-            computer = playerFactory("O");
-            gb.newGame();
-            gameInProgress = true;
-            i = 0;
-        }
-        //for (let i=0; i<9; i++){
-        
-        
-        if (i%2 == 0) {
-                humanPlayer(human);
-                if (checkWinCondition(gb.getXPositions())) {
-                    console.log("You win!")
-                }
+        if (!gameOver) {
+            if (!gameInProgress) {
+                human = playerFactory("X");
+                computer = playerFactory("O");
+                gb.newGame();
+                gameInProgress = true;
+                turn = 0;
             }
+            //for (let i=0; i<9; i++){
+            
+            
+            if (turn%2 == 0) {
+                    humanPlayer(human);
+                    if (checkWinCondition(gb.getXPositions())) {
+                        console.log("You win!")
+                    }
+                }
             else {
                 computerPlayer(computer);
                 if (checkWinCondition(gb.getOPositions())) {
                     console.log("You lose!")
                 }
             }
-        i++
+            turn++
 
-        if (i==9){
-            gameInProgress = false;
+            if (turn>=9){
+                gameOver = true;
+            }
+            //}
+            console.log(board)
         }
-        //}
-        console.log(board)
     }
 
     const playSecond = () => {
-        const human = playerFactory("O");
-        const computer = playerFactory("X");
-        gb.newGame();
-        for (let i=0; i<9; i++){
-            if (i%2 == 0) {
+        console.log(turn)
+
+        if (!gameOver) {
+            if (!gameInProgress) {
+                human = playerFactory("O");
+                computer = playerFactory("X");
+                gb.newGame();
+                gameInProgress = true;
+                turn = 0;
+            }
+
+            if (turn%2 == 0) {
                 computerPlayer(computer);
                 if (checkWinCondition(gb.getXPositions())) {
                     console.log("You lose!")
@@ -107,8 +119,13 @@ const game = (() => {
                     console.log("You win!")
                 }
             }
+            turn++
+
+            if (turn>=9){
+                gameOver = true;
+            }
+            console.log(board)
         }
-        console.log(board)
     }
 
     const checkWinCondition = (positions) => {
@@ -146,9 +163,14 @@ const game = (() => {
         console.log(board)
     }
 
+    const resetGame = () => {
+        window.location.reload();
+    }
+
     return {
         playFirst,
-        playSecond
+        playSecond,
+        resetGame
     }
 
 
@@ -189,5 +211,6 @@ const displayController = (() => {
         addO
     }
 })();
+
 
 displayController.makeRows(3,3)
