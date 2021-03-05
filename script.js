@@ -58,73 +58,89 @@ const game = (() => {
     let human = playerFactory("X");
     let computer = playerFactory("O");
     let gameOver = false;
+    let playfirst = true;
 
-    const playFirst = () => {
-        console.log(turn)
+    const play = (playFirst, n) => {
+        if (playFirst) {
+            console.log(turn)
+            if (!gameOver && (board[n]=="" || board[n]==undefined)) {
+                document.getElementById("playFirst").className = 'hidden'; 
+                document.getElementById("playSecond").className = 'hidden'; 
 
-        if (!gameOver) {
-            if (!gameInProgress) {
-                human = playerFactory("X");
-                computer = playerFactory("O");
-                gb.newGame();
-                gameInProgress = true;
-                turn = 0;
-            }
-            //for (let i=0; i<9; i++){
-            
-            
-            if (turn%2 == 0) {
-                    humanPlayer(human);
+                if (!gameInProgress) {
+                    human = playerFactory("X");
+                    computer = playerFactory("O");
+                    gb.newGame();
+                    gameInProgress = true;
+                    turn = 0;
+                }
+                //for (let i=0; i<9; i++){
+                
+                
+                if (turn%2 == 0) {
+                    humanPlayer(human, n);
                     if (checkWinCondition(gb.getXPositions())) {
                         console.log("You win!")
+                        gameOver = true;
+                        document.getElementById("resetGame").className = 'show'; 
                     }
                 }
-            else {
-                computerPlayer(computer);
-                if (checkWinCondition(gb.getOPositions())) {
-                    console.log("You lose!")
+                else {
+                    computerPlayer(computer);
+                    if (checkWinCondition(gb.getOPositions())) {
+                        console.log("You lose!")
+                        gameOver = true;
+                        document.getElementById("resetGame").className = 'show'; 
+                    }
                 }
-            }
-            turn++
+                turn++
 
-            if (turn>=9){
-                gameOver = true;
+                if (turn>=9){
+                    gameOver = true;
+                    document.getElementById("resetGame").className = 'show'; 
+                }
+                //}
+                console.log(board)
             }
-            //}
-            console.log(board)
         }
-    }
+        else {
+            console.log(turn)
 
-    const playSecond = () => {
-        console.log(turn)
-
-        if (!gameOver) {
-            if (!gameInProgress) {
-                human = playerFactory("O");
-                computer = playerFactory("X");
-                gb.newGame();
-                gameInProgress = true;
-                turn = 0;
-            }
-
-            if (turn%2 == 0) {
-                computerPlayer(computer);
-                if (checkWinCondition(gb.getXPositions())) {
-                    console.log("You lose!")
+            if (!gameOver && gb.getBoard[n]=="") {
+                document.getElementById("playFirst").className = 'hidden'; 
+                
+                if (!gameInProgress) {
+                    human = playerFactory("O");
+                    computer = playerFactory("X");
+                    gb.newGame();
+                    gameInProgress = true;
+                    turn = 0;
                 }
-            }
-            else {
-                humanPlayer(human);
-                if (checkWinCondition(gb.getOPositions())) {
-                    console.log("You win!")
-                }
-            }
-            turn++
 
-            if (turn>=9){
-                gameOver = true;
+                if (turn%2 == 0) {
+                    computerPlayer(computer);
+                    if (checkWinCondition(gb.getXPositions())) {
+                        console.log("You lose!")
+                        gameOver = true;
+                        document.getElementById("resetGame").className = 'show'; 
+                    }
+                }
+                else {
+                    humanPlayer(human, n);
+                    if (checkWinCondition(gb.getOPositions())) {
+                        console.log("You win!")
+                        gameOver = true;
+                        document.getElementById("resetGame").className = 'show'; 
+                    }
+                }
+                turn++
+
+                if (turn>=9){
+                    gameOver = true;
+                    document.getElementById("resetGame").className = 'show'; 
+                }
+                console.log(board)
             }
-            console.log(board)
         }
     }
 
@@ -138,8 +154,8 @@ const game = (() => {
         return false;
     }
 
-    const humanPlayer = (human) => {
-        let square = prompt("where?");
+    const humanPlayer = (human, n) => {
+        let square = n;
         gb.setSquare(parseInt(square), human);
         if (human.side == "X")
             displayController.addX(square);
@@ -168,8 +184,7 @@ const game = (() => {
     }
 
     return {
-        playFirst,
-        playSecond,
+        play,
         resetGame
     }
 
@@ -185,8 +200,10 @@ const displayController = (() => {
             let cell = document.createElement("div");
             cell.addEventListener("click", function() {
                 
-                
-                console.log(parseInt(cell.classList[1][3]))
+                game.play(true ,parseInt(cell.classList[1][3]))
+                game.play(true)
+
+                //console.log(parseInt(cell.classList[1][3]))
             });
 
             container.appendChild(cell).className = `grid-item box${c}`;

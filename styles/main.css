@@ -32,6 +32,15 @@ h1 {
     grid-template-columns: repeat(var(--grid-cols), auto);
 }
 
+.hidden {
+    display: none;
+}
+ 
+.show {
+    display: inline;
+}
+
+
 .box0 {
     border-bottom: 2px solid#331719;
     border-right: 2px solid#331719;
