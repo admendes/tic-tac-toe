@@ -52,13 +52,24 @@ const game = (() => {
     const gb = gameBoard;
     const board = gb.getBoard();
     const winConditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]; 
+    let gameInProgress = false;
+    let i = 0;
+    let human = playerFactory("X");
+    let computer = playerFactory("O");
 
     const playFirst = () => {
-        const human = playerFactory("X");
-        const computer = playerFactory("O");
-        gb.newGame();
-        for (let i=0; i<9; i++){
-            if (i%2 == 0) {
+
+        if (!gameInProgress) {
+            human = playerFactory("X");
+            computer = playerFactory("O");
+            gb.newGame();
+            gameInProgress = true;
+            i = 0;
+        }
+        //for (let i=0; i<9; i++){
+        
+        
+        if (i%2 == 0) {
                 humanPlayer(human);
                 if (checkWinCondition(gb.getXPositions())) {
                     console.log("You win!")
@@ -70,7 +81,12 @@ const game = (() => {
                     console.log("You lose!")
                 }
             }
+        i++
+
+        if (i==9){
+            gameInProgress = false;
         }
+        //}
         console.log(board)
     }
 
@@ -108,6 +124,9 @@ const game = (() => {
     const humanPlayer = (human) => {
         let square = prompt("where?");
         gb.setSquare(parseInt(square), human);
+        if (human.side == "X")
+            displayController.addX(square);
+        else displayController.addO(square);
     }
 
     const computerPlayer = (computer) => {
@@ -119,6 +138,11 @@ const game = (() => {
         }
         let random = free[Math.floor(Math.random() * free.length)];
         gb.setSquare(random, computer);
+        displayController.addX(random);
+        if (computer.side == "X")
+            displayController.addX(random);
+        else displayController.addO(random);
+
         console.log(board)
     }
 
@@ -130,5 +154,40 @@ const game = (() => {
 
 })();
 
-game.playSecond();
-game.playFirst();
+const displayController = (() => {
+
+    function makeRows(rows, cols) {
+        container.style.setProperty('--grid-rows', rows);
+        container.style.setProperty('--grid-cols', cols);
+        for (c = 0; c < (rows * cols); c++) {
+            let cell = document.createElement("div");
+            cell.addEventListener("click", function() {
+                
+                
+                console.log(parseInt(cell.classList[1][3]))
+            });
+
+            container.appendChild(cell).className = `grid-item box${c}`;
+
+        };
+
+    };
+
+    function addX(pos) {
+        let elem = document.getElementsByClassName(`box${pos}`);
+        elem[0].innerHTML = "X";
+    }
+
+    function addO(pos) {
+        let elem = document.getElementsByClassName(`box${pos}`);
+        elem[0].innerHTML = "0";
+    }
+
+    return {
+        makeRows,
+        addX,
+        addO
+    }
+})();
+
+displayController.makeRows(3,3)
