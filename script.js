@@ -218,38 +218,12 @@ const displayController = (() => {
         for (c = 0; c < (rows * cols); c++) {
             let cell = document.createElement("div");
             cell.addEventListener("click", function() {
-
                 game.play(first ,parseInt(cell.classList[1][3]))
                 game.play(first)
-
-                //console.log(parseInt(cell.classList[1][3]))
             });
-
             container.appendChild(cell).className = `grid-item box${c}`;
-
         };
         game.play(first)
-        
-
-
-        //const container = document.getElementById("container");
-        /*
-        let elem = document.getElementsByClassName("box1");
-        let image = document.createElement("div");
-        image.classList.add("mystyle");
-        elem[0].appendChild(image).className = "x";
-
-
-        /*
-        var img = document.createElement("img");
-        img.setAttribute("src", "images/o.jpg");
-        img.setAttribute("height", "50");
-        img.setAttribute("width", "50");
-        img.setAttribute("alt", "O");
-
-        let elem = document.getElementsByClassName("box1");
-        elem[0].appendChild(img);
-        */
     };
 
     function addX(pos) {
