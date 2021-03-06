@@ -93,5 +93,27 @@ h1 {
 .grid-item {
     width: 170px;
     height: 170px;
-    font-size: 33px;
+    font-size: 80px;
+}
+
+button {
+    background-color: #4c56af;
+    border: none;
+    color: white;
+    width: 150px;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 25px 2px;
+    cursor: pointer;
+}
+
+#controls {
+    text-align: center;
+}
+
+#bottom {
+    text-align: center;
 }

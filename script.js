@@ -67,6 +67,7 @@ const game = (() => {
             if (!gameOver && (board[n]=="" || board[n]==undefined)) {
                 document.getElementById("playFirst").className = 'hidden'; 
                 document.getElementById("playSecond").className = 'hidden'; 
+                document.getElementById("startText").className = 'hidden'; 
 
                 if (!gameInProgress) {
                     human = playerFactory("X");
@@ -81,6 +82,9 @@ const game = (() => {
                     if (checkWinCondition(gb.getXPositions())) {
                         console.log("You win!")
                         gameOver = true;
+                        let result = document.getElementById("resultText");
+                        result.innerHTML = "You win!";
+                        result.className = 'show';
                         document.getElementById("resetGame").className = 'show'; 
                     }
                 }
@@ -89,13 +93,19 @@ const game = (() => {
                     if (checkWinCondition(gb.getOPositions())) {
                         console.log("You lose!")
                         gameOver = true;
+                        let result = document.getElementById("resultText");
+                        result.innerHTML = "You lose!";
+                        result.className = 'show';
                         document.getElementById("resetGame").className = 'show'; 
                     }
                 }
                 turn++
 
-                if (turn>=9){
+                if (turn>=9 && !gameOver){
                     gameOver = true;
+                    let result = document.getElementById("resultText");
+                    result.innerHTML = "It's a tie!";
+                    result.className = 'show';
                     document.getElementById("resetGame").className = 'show'; 
                 }
                 console.log(board)
@@ -107,6 +117,7 @@ const game = (() => {
             if (!gameOver && (board[n]=="" || board[n]==undefined)) {
                 document.getElementById("playFirst").className = 'hidden'; 
                 document.getElementById("playSecond").className = 'hidden'; 
+                document.getElementById("startText").className = 'hidden'; 
 
                 if (!gameInProgress) {
                     human = playerFactory("O");
@@ -121,6 +132,9 @@ const game = (() => {
                     if (checkWinCondition(gb.getXPositions())) {
                         console.log("You lose!")
                         gameOver = true;
+                        let result = document.getElementById("resultText");
+                        result.innerHTML = "You lose!";
+                        result.className = 'show';
                         document.getElementById("resetGame").className = 'show'; 
                     }
                 }
@@ -129,13 +143,19 @@ const game = (() => {
                     if (checkWinCondition(gb.getOPositions())) {
                         console.log("You win!")
                         gameOver = true;
+                        let result = document.getElementById("resultText");
+                        result.innerHTML = "You win!";
+                        result.className = 'show';
                         document.getElementById("resetGame").className = 'show'; 
                     }
                 }
                 turn++
 
-                if (turn>=9){
+                if (turn>=9 && !gameOver){
                     gameOver = true;
+                    let result = document.getElementById("resultText");
+                    result.innerHTML = "It's a tie!";
+                    result.className = 'show';
                     document.getElementById("resetGame").className = 'show'; 
                 }
                 console.log(board)
@@ -208,8 +228,7 @@ const displayController = (() => {
             container.appendChild(cell).className = `grid-item box${c}`;
 
         };
-        if (!first)
-            game.play(first)
+        game.play(first)
         
 
 

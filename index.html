@@ -8,14 +8,19 @@
 </head>
 <body>
     <h3>Tic-tac-toe Game!</h3>
-    <div id="container">
-    </div>
+    <h1 id="startText">Are you going first or second?</h1>
     <div id="controls">
         <button id="playFirst" onclick="displayController.makeRows(3, 3, true)">First</button>
         <button id="playSecond" onclick="displayController.makeRows(3, 3, false)">Second</button>
-        <button id="resetGame" class="hidden" onclick="game.resetGame()">Reset</button>
-
     </div>
+    <div id="container">
+    </div>
+    <div id="bottom">
+        <h1 id="resultText" class="hidden">You won!</h1>
+
+        <button id="resetGame" class="hidden" onclick="game.resetGame()">Reset</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
