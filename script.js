@@ -106,8 +106,9 @@ const game = (() => {
         else {
             console.log(turn)
 
-            if (!gameOver && gb.getBoard[n]=="") {
+            if (!gameOver && (board[n]=="" || board[n]==undefined)) {
                 document.getElementById("playFirst").className = 'hidden'; 
+                document.getElementById("playSecond").className = 'hidden'; 
                 
                 if (!gameInProgress) {
                     human = playerFactory("O");
@@ -183,6 +184,11 @@ const game = (() => {
         window.location.reload();
     }
 
+    const firstPlayer = (playFirst) => {
+        this.playFirst = playFirst
+        
+    }
+
     return {
         play,
         resetGame
@@ -193,15 +199,16 @@ const game = (() => {
 
 const displayController = (() => {
 
-    function makeRows(rows, cols) {
+    function makeRows(rows, cols, first) {
         container.style.setProperty('--grid-rows', rows);
         container.style.setProperty('--grid-cols', cols);
+        
         for (c = 0; c < (rows * cols); c++) {
             let cell = document.createElement("div");
             cell.addEventListener("click", function() {
-                
-                game.play(true ,parseInt(cell.classList[1][3]))
-                game.play(true)
+
+                game.play(first ,parseInt(cell.classList[1][3]))
+                game.play(first)
 
                 //console.log(parseInt(cell.classList[1][3]))
             });
@@ -209,6 +216,7 @@ const displayController = (() => {
             container.appendChild(cell).className = `grid-item box${c}`;
 
         };
+        game.play(first)
 
     };
 
@@ -230,4 +238,4 @@ const displayController = (() => {
 })();
 
 
-displayController.makeRows(3,3)
+//displayController.makeRows(3,3)
