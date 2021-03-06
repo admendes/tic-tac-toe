@@ -1,3 +1,5 @@
+const container = document.getElementById("container");
+
 const playerFactory = (side) => {
     return { side };
 }
@@ -58,7 +60,6 @@ const game = (() => {
     let human = playerFactory("X");
     let computer = playerFactory("O");
     let gameOver = false;
-    let playfirst = true;
 
     const play = (playFirst, n) => {
         if (playFirst) {
@@ -74,9 +75,7 @@ const game = (() => {
                     gameInProgress = true;
                     turn = 0;
                 }
-                //for (let i=0; i<9; i++){
-                
-                
+
                 if (turn%2 == 0) {
                     humanPlayer(human, n);
                     if (checkWinCondition(gb.getXPositions())) {
@@ -99,7 +98,6 @@ const game = (() => {
                     gameOver = true;
                     document.getElementById("resetGame").className = 'show'; 
                 }
-                //}
                 console.log(board)
             }
         }
@@ -109,7 +107,7 @@ const game = (() => {
             if (!gameOver && (board[n]=="" || board[n]==undefined)) {
                 document.getElementById("playFirst").className = 'hidden'; 
                 document.getElementById("playSecond").className = 'hidden'; 
-                
+
                 if (!gameInProgress) {
                     human = playerFactory("O");
                     computer = playerFactory("X");
@@ -172,7 +170,6 @@ const game = (() => {
         }
         let random = free[Math.floor(Math.random() * free.length)];
         gb.setSquare(random, computer);
-        displayController.addX(random);
         if (computer.side == "X")
             displayController.addX(random);
         else displayController.addO(random);
@@ -182,11 +179,6 @@ const game = (() => {
 
     const resetGame = () => {
         window.location.reload();
-    }
-
-    const firstPlayer = (playFirst) => {
-        this.playFirst = playFirst
-        
     }
 
     return {
@@ -216,18 +208,49 @@ const displayController = (() => {
             container.appendChild(cell).className = `grid-item box${c}`;
 
         };
-        game.play(first)
+        if (!first)
+            game.play(first)
+        
 
+
+        //const container = document.getElementById("container");
+        /*
+        let elem = document.getElementsByClassName("box1");
+        let image = document.createElement("div");
+        image.classList.add("mystyle");
+        elem[0].appendChild(image).className = "x";
+
+
+        /*
+        var img = document.createElement("img");
+        img.setAttribute("src", "images/o.jpg");
+        img.setAttribute("height", "50");
+        img.setAttribute("width", "50");
+        img.setAttribute("alt", "O");
+
+        let elem = document.getElementsByClassName("box1");
+        elem[0].appendChild(img);
+        */
     };
 
     function addX(pos) {
         let elem = document.getElementsByClassName(`box${pos}`);
-        elem[0].innerHTML = "X";
+        //elem[0].innerText = "X"
+        var node = document.createElement("div");
+        node.classList.add("x")
+        var textnode = document.createTextNode("X");
+        node.appendChild(textnode);
+        elem[0].appendChild(node);
     }
 
     function addO(pos) {
         let elem = document.getElementsByClassName(`box${pos}`);
-        elem[0].innerHTML = "0";
+        //elem[0].innerText = "O"
+        var node = document.createElement("div");
+        node.classList.add("o")
+        var textnode = document.createTextNode("O");
+        node.appendChild(textnode);
+        elem[0].appendChild(node);
     }
 
     return {
